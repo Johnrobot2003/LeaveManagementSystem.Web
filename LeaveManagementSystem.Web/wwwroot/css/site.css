@@ -24,3 +24,8 @@ li a:hover{
     background-color:antiquewhite;
     padding-right:10px;
 }
+
+img{
+    height:50%;
+    width:50%;
+}
