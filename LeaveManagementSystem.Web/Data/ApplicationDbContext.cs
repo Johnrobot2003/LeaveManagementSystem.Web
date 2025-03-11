@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using LeaveManagementSystem.Web.Data;
 
 namespace LeaveManagementSystem.Web.Data;
 
@@ -9,4 +10,7 @@ public class ApplicationDbContext : IdentityDbContext
         : base(options)
     {
     }
+    public DbSet<LeaveType> LeaveTypes{ get; set; }
+    public DbSet<DogBreeds> DogBreeds { get; set; }
 }
+
