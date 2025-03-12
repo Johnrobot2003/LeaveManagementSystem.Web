@@ -29,7 +29,7 @@ img{
     height:50%;
     width:50%;
 }
-tr:hover {
+tbody tr:hover {
     background-color: #ced4da;
     transition: 0.25s;
 }
