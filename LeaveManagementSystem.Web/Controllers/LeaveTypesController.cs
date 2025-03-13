@@ -50,9 +50,9 @@ namespace LeaveManagementSystem.Web.Controllers
             {
                 return NotFound();
             }
-            var displayData = _mapper.Map<LeaveTypeReadOnlyVM>(leaveType);
+            var display = _mapper.Map<LeaveTypeReadOnlyVM>(leaveType);
 
-            return View(displayData);
+            return View(display);
         }
 
         // GET: LeaveTypes/Create

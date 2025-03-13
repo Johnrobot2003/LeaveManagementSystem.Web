@@ -5,7 +5,7 @@
 }
 
 
-<h1 class="display-4">Data table</h1>
+<h1 class="display-4 text-center">Data table</h1>
 
 <p>
     <a class="btn btn-primary" asp-action="Create">Create New</a>
@@ -14,17 +14,25 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model=>model.Id)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NumberOfDays)
             </th>
-            <th></th>
+            <th>
+                Activities
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                @Html.DisplayFor(modelItem => item.Id) 
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
