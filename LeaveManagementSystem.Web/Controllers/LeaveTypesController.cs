@@ -163,11 +163,17 @@ namespace LeaveManagementSystem.Web.Controllers
         // POST: LeaveTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Archive(int id)
         {
             var leaveType = await _context.LeaveTypes.FindAsync(id);
             if (leaveType != null)
             {
+                var archive = new ArchivesLeaveType
+                {
+                    Name = leaveType.Name,
+                    NumberOfDays = leaveType.NumberOfDays
+                };
+                _context.ArchivesLeaveType.Add(archive);
                 _context.LeaveTypes.Remove(leaveType);
             }
 
