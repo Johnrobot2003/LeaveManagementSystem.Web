@@ -76,6 +76,11 @@ namespace LeaveManagementSystem.Web.Controllers
             {
                 ModelState.AddModelError(nameof(leaveTypeCreate.NumberOfDays), "Wag kang bastos!");
             }
+            if (await NameExistsInCreateAsync(leaveTypeCreate))
+            {
+                ModelState.AddModelError(nameof(leaveTypeCreate.Name), "Name already exists!");
+            }
+            
             if (ModelState.IsValid)
             {
                 var leaveType = _mapper.Map<LeaveType>(leaveTypeCreate);
@@ -85,6 +90,9 @@ namespace LeaveManagementSystem.Web.Controllers
             }
             return View(leaveTypeCreate);
         }
+
+      
+
 
         // GET: LeaveTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -118,6 +126,10 @@ namespace LeaveManagementSystem.Web.Controllers
             {
                 ModelState.AddModelError(nameof(leaveTypeEdit.NumberOfDays), "Wag kang Bastos!");
             }
+            if (await NameExistsInCreateForEdit(leaveTypeEdit))
+            {
+                ModelState.AddModelError(nameof(leaveTypeEdit.Name), "Name already exists!");
+            }
             if (ModelState.IsValid)
             {
                 try
@@ -141,6 +153,8 @@ namespace LeaveManagementSystem.Web.Controllers
             }
             return View(leaveTypeEdit);
         }
+
+       
 
         // GET: LeaveTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -179,5 +193,20 @@ namespace LeaveManagementSystem.Web.Controllers
         {
             return _context.LeaveTypes.Any(e => e.Id == id);
         }
+       
+
+        private async Task<bool> NameExistsInCreateAsync(LeaveTypeCreateVM leave)
+        {
+            var lowercase = leave.Name.ToLower();
+            return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(lowercase));
+        }
+        private async Task<bool> NameExistsInCreateForEdit(LeaveTypeEditVM leave)
+        {
+            var lowercaseName = leave.Name.ToLower();
+            return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(lowercaseName)
+            && q.Id != leave.Id
+             );
+        }
+
     }
 }
