@@ -12,6 +12,7 @@ using LeaveManagementSystem.Web.Services;
 
 namespace LeaveManagementSystem.Web.Controllers
 {
+    [Authorize(Roles = Roles.Adminitrator)]
     public class LeaveTypesController(ILeaveTypeService leaveTypesService) : Controller
     {
         
