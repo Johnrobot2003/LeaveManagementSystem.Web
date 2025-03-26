@@ -63,8 +63,21 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                  FirstName = "John",
                  LastName = "Admin3",
                  DateOfBirth = new DateOnly(2003, 01, 23)
-             }
-             
+             },
+              new ApplicationUser
+              {
+                  Id = "3d03a090-0365-4bd6-a372-0c0cca6b2ec5",
+                  Email = "acebojohnrohan@gmail.com",
+                  NormalizedEmail = "ACEBOJOHNROHAN@GMAIL.COM",
+                  NormalizedUserName = "ACEBOJOHNROHAN@GMAIL.COM",
+                  UserName = "acebojohnrohan@gmail.com",
+                  PasswordHash = hasher.HashPassword(null, "Adminp@ssword"),
+                  EmailConfirmed = true,
+                  FirstName = "John",
+                  LastName = "Acebo",
+                  DateOfBirth = new DateOnly(2003, 01, 23)
+              }
+
             );
         builder.Entity<IdentityUserRole<string>>().HasData(
          new IdentityUserRole<string>
@@ -76,7 +89,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
          {
              RoleId = "f7023c71-325f-45af-b159-0437489f5f6f",
              UserId = "e6a8f81b-851a-4c8d-80df-dbb02c481971"
-         }
+         },
+          new IdentityUserRole<string>
+          {
+              RoleId = "f7023c71-325f-45af-b159-0437489f5f6f",
+              UserId = "3d03a090-0365-4bd6-a372-0c0cca6b2ec5"
+          }
          );
 
     }

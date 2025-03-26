@@ -12,7 +12,7 @@ using LeaveManagementSystem.Web.Services;
 
 namespace LeaveManagementSystem.Web.Controllers
 {
-    [Authorize(Roles = Roles.Adminitrator)]
+    [Authorize]
     public class LeaveTypesController(ILeaveTypeService leaveTypesService) : Controller
     {
         
@@ -52,6 +52,7 @@ namespace LeaveManagementSystem.Web.Controllers
         }
 
         // GET: LeaveTypes/Create
+        [Authorize(Roles = Roles.Adminitrator)]
         public IActionResult Create()
         {
             return View();
@@ -62,6 +63,7 @@ namespace LeaveManagementSystem.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+      
         public async Task<IActionResult> Create(LeaveTypeCreateVM leaveTypeCreate)
         {
             if (leaveTypeCreate.Name.Contains("test"))

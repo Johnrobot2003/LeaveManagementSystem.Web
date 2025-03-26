@@ -7,9 +7,14 @@
 
 <h1 class="display-4 text-center">Data table</h1>
 
-<p>
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
-</p>
+@if (User.IsInRole("Administrator"))
+{
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Create New</a>
+    </p>
+}
+
+
 <table class="table">
     <thead>
         <tr>
