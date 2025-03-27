@@ -1,39 +1,82 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
-}
-li a:hover{
-    background-color:antiquewhite;
-    padding-right:10px;
+    margin-bottom: 60px;
+    background-color: #dee2e6;
 }
 
-img{
-    height:50%;
-    width:50%;
+li a:hover {
+    background-color: antiquewhite;
+    padding-right: 10px;
 }
+
+img {
+    height: 50%;
+    width: 50%;
+}
+
 tbody tr:hover {
     background-color: #ced4da;
     transition: 0.25s;
 }
-table{
-    padding-top:20px 10px;
+
+table {
+    padding-top: 20px 10px;
 }
 
+#intro {
+    font-weight: 600;
+}
+
+#image {
+    max-width: 500px;
+    height: 300px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 3px 7px 5px black;
+}
+
+    #image:hover {
+        transform: scale(1.1);
+    }
+
+#firstParagraph {
+    color: #495057;
+}
+
+#secondParagraph {
+    font-size: 1rem;
+    text-align: justify;
+    line-height: 25px;
+}
+
+#icon {
+    transition: all 0.25s;
+}
+
+    #icon:hover {
+        transform: scale(1.1);
+    }
+/* Optional: Constrain max width to prevent extreme resizing */
+.img-container {
+    max-width: 500px; /* Adjust based on preference */
+    width: 100%;
+}
