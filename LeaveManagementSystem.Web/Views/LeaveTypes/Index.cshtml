@@ -47,9 +47,38 @@
             <td>
                 <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
                     <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> 
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-danger deleteBtn"  data-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<form id="deleteForm" asp-action="Deletusmigus">
+    <input type="hidden" name="deleteid" id="deleteleaveTypeId" />
+</form>
+@section Scripts {
+    <script>
+        $(function () {
+            $('.deleteBtn').click(
+                function(e){
+                    swal({
+                        title:"Are you sure?",
+                        text:"Are you sure you want to delete the leave type?",
+                        icon:"warning",
+                        buttons: true,
+                        dangerMode: true
+
+                    }).then((confirm)=>{
+                        if(confirm){
+                            var btn = $(this);
+                            var id = btn.data('id');
+                            $('#deleteleaveTypeId').val(id);
+                            $('#deleteForm').submit();
+                        }
+                    }
+                    )
+                }
+            )
+        });
+    </script>
+}

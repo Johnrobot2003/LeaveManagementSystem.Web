@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using LeaveManagementSystem.Web.Data;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Microsoft.AspNetCore.Identity;
+using LeaveManagementSystem.Web.Data.Configurations;
+using System.Reflection;
 
 namespace LeaveManagementSystem.Web.Data;
 
@@ -15,93 +17,23 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.Entity<IdentityRole>().HasData
-            (
-            new IdentityRole
-            {
-                Id = "7d92f11f-4d87-4ba7-9b1e-918906386c78",
-                Name = "Employee",
-                NormalizedName = "EMPLOYEE"
-            },
-         new IdentityRole
-         {
-             Id = "f9fa948a-5780-4cfd-bb53-8b3d326014af",
-             Name = "Supervisor",
-             NormalizedName = "SUPERVISOR"
-         },
-         new IdentityRole
-         {
-             Id = "f7023c71-325f-45af-b159-0437489f5f6f",
-             Name = "Administrator",
-             NormalizedName = "ADMINISTRATOR"
-         }
-            );
-        var hasher = new PasswordHasher<ApplicationUser>();
-        builder.Entity<ApplicationUser>().HasData(
-             new ApplicationUser
-             {
-                 Id = "1bdeca61-b213-4a07-9321-d80f8d442ba4",
-                 Email = "adminemail@user.com",
-                 NormalizedEmail = "ADMINEMAIL@USER.COM",
-                 NormalizedUserName = "ADMINEMAIL@USER.COM",
-                 UserName = "adminemail@user.com",
-                 PasswordHash = hasher.HashPassword(null, "P@ssword1"),
-                 EmailConfirmed = true,
-                 FirstName = "Default",
-                 LastName = "Admin",
-                 DateOfBirth = new DateOnly(2003, 01, 23)
-             },
-             new ApplicationUser
-             {
-                 Id = "e6a8f81b-851a-4c8d-80df-dbb02c481971",
-                 Email = "secondadmin@user.com",
-                 NormalizedEmail = "SECONDADMIN@USER.COM",
-                 NormalizedUserName = "SECONDADMIN@USER.COM",
-                 UserName = "secondadmin@user.com",
-                 PasswordHash = hasher.HashPassword(null, "Ro#an2003"),
-                 EmailConfirmed = true,
-                 FirstName = "John",
-                 LastName = "Admin3",
-                 DateOfBirth = new DateOnly(2003, 01, 23)
-             },
-              new ApplicationUser
-              {
-                  Id = "3d03a090-0365-4bd6-a372-0c0cca6b2ec5",
-                  Email = "acebojohnrohan@gmail.com",
-                  NormalizedEmail = "ACEBOJOHNROHAN@GMAIL.COM",
-                  NormalizedUserName = "ACEBOJOHNROHAN@GMAIL.COM",
-                  UserName = "acebojohnrohan@gmail.com",
-                  PasswordHash = hasher.HashPassword(null, "Adminp@ssword"),
-                  EmailConfirmed = true,
-                  FirstName = "John",
-                  LastName = "Acebo",
-                  DateOfBirth = new DateOnly(2003, 01, 23)
-              }
+        //You can use this for short cut
+        //builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            );
-        builder.Entity<IdentityUserRole<string>>().HasData(
-         new IdentityUserRole<string>
-         {
-             RoleId = "f7023c71-325f-45af-b159-0437489f5f6f",
-             UserId = "1bdeca61-b213-4a07-9321-d80f8d442ba4"
-         },
-         new IdentityUserRole<string>
-         {
-             RoleId = "f7023c71-325f-45af-b159-0437489f5f6f",
-             UserId = "e6a8f81b-851a-4c8d-80df-dbb02c481971"
-         },
-          new IdentityUserRole<string>
-          {
-              RoleId = "f7023c71-325f-45af-b159-0437489f5f6f",
-              UserId = "3d03a090-0365-4bd6-a372-0c0cca6b2ec5"
-          }
-         );
-
+        builder.ApplyConfiguration(new LeaveRequestStatusConfiguration());
+        builder.ApplyConfiguration(new IdentityRoleConfiguration());
+        builder.ApplyConfiguration(new ApplicationUserConfiguration());
+        builder.ApplyConfiguration(new IdentityUserRoleConfiguration());
     }
 
     public DbSet<LeaveType> LeaveTypes{ get; set; }
     public DbSet<DogBreeds> DogBreeds { get; set; }
     public DbSet<Period> Periods { get; set; }
     public DbSet<LeaveAllocation> LeaveAllocations { get; set; }
+
+    public DbSet<LeaveRequestStatus> LeaveRequestStatuses { get; set; }
+
+    public DbSet<LeaveRequest> LeaveRequests{ get; set; }
+
 }
 

@@ -80,3 +80,22 @@ table {
     max-width: 500px; /* Adjust based on preference */
     width: 100%;
 }
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.loginBox {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.form-floating {
+    width: 400px;
+}

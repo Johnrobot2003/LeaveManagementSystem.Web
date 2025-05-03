@@ -9,6 +9,7 @@ using LeaveManagementSystem.Web.Data;
 
 namespace LeaveManagementSystem.Web.Controllers
 {
+    [Authorize]
     public class PeriodsController : Controller
     {
         private readonly ApplicationDbContext _context;

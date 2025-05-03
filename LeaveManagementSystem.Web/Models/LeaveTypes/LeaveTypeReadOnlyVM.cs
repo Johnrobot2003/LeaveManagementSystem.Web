@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LeaveManagementSystem.Web.Models.LeaveAllocations;
+using System.ComponentModel.DataAnnotations;
 
 namespace LeaveManagementSystem.Web.Models.LeaveTypes
 {
@@ -8,6 +9,8 @@ namespace LeaveManagementSystem.Web.Models.LeaveTypes
 
         [Display (Name = "Number of Days")]
         public int NumberOfDays { get; set; }
+
+        public List<LeaveAllocationVM> LeaveAllocations { get; set; }
 
     }
 }

@@ -72,4 +72,5 @@ public class LeaveTypeService : ILeaveTypeService
         && q.Id != leave.Id
          );
     }
+    
 }

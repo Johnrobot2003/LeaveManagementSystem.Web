@@ -4,6 +4,7 @@
 
 
 
+using LeaveManagementSystem.Web.Services.LeaveAllocations;
 using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
@@ -12,6 +13,7 @@ namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ILeaveAllocationService _leaveAllocationService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
@@ -19,6 +21,7 @@ namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
+            ILeaveAllocationService leaveAllocationService,
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
@@ -26,6 +29,7 @@ namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
+            this._leaveAllocationService = leaveAllocationService;
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
@@ -117,7 +121,7 @@ namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             var roles =await  _roleManager.Roles
                 .Select(q => q.Name)
-                .Where(q => q != "Administrator")
+                //.Where(q => q != "Administrator")
                 .ToArrayAsync();
             RoleNames = roles;
         }
@@ -141,7 +145,11 @@ namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    if(Input.RoleName == "Supervisor")
+                     if (Input.RoleName == Roles.Adminitrator)
+                    {
+                        await _userManager.AddToRolesAsync(user, [Roles.Employee, Roles.Supervisor, Roles.Adminitrator]);
+                    }
+                    if (Input.RoleName == "Supervisor")
                     {
                         await _userManager.AddToRolesAsync(user, [Roles.Employee, Roles.Supervisor]);
                     }
@@ -151,7 +159,9 @@ namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
                     }
 
 
-                        var userId = await _userManager.GetUserIdAsync(user);
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    await _leaveAllocationService.AllocateLeave(userId);
+
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
@@ -180,7 +190,7 @@ namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
             }
             var roles = await _roleManager.Roles
                .Select(q => q.Name)
-               .Where(q => q != "Administrator")
+                //.Where(q => q != "Administrator")
                .ToArrayAsync();
             RoleNames = roles;
             // If we got this far, something failed, redisplay form

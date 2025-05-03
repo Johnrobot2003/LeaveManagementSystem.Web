@@ -171,11 +171,11 @@ namespace LeaveManagementSystem.Web.Controllers
         }
 
         // POST: LeaveTypes/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Deletusmigus")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int deleteid)
         {
-            await _leaveTypesService.Remove(id);
+            await _leaveTypesService.Remove(deleteid);
             return RedirectToAction(nameof(Index));
         }
 
