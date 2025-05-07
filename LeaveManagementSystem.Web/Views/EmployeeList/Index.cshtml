@@ -44,14 +44,11 @@
                    @Html.DisplayFor(modelItem => item.Email)  
                </td>  
                <td>  
-                   <a asp-area="Identity"  
-                      asp-page="/Account/ForgotPassword"  
-                      asp-route-userId="@item.Id">  
-                       Change password  
-                   </a>  
+                  <a asp-action="ResetPassword" asp-route-userid="@item.Id" class="btn btn-warning">Reset Password</a>
                </td>  
                <td>  
                    <a class="btn btn-danger" asp-action="Delete" asp-route-userid="@item.Id">Delete</a>
                </td>  
            </tr>  
         }
+</table>

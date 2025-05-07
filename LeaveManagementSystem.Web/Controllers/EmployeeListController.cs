@@ -15,15 +15,25 @@ namespace LeaveManagementSystem.Web.Controllers
 
         public async Task<IActionResult> ResetPassword(string? userId)
         {
-            var model = await _employeeListService.ResetPassword(userId);
+            if (userId == null)
+            {
+                return NotFound();
+            }
+            var model = await _employeeListService.Get<ResetPasswordVM>(userId);
+            if (model == null)
+            {
+                return NotFound();
+            }
             return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(ResetPasswordVM resetPassword)
+        public async Task<IActionResult> ResetPasswordConfirmed(string? userId)
         {
-            throw new NotImplementedException();
+           await _employeeListService.ResetPasswordToDefault(userId);
+            return RedirectToAction(nameof(Index));
         }
+
         public async Task<IActionResult> Delete(string? userid)
         {
             if (userid == null)

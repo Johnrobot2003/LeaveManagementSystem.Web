@@ -13,6 +13,7 @@ namespace LeaveManagementSystem.Web.MappingProfiles
 
             CreateMap<LeaveTypeCreateVM, LeaveType>();
             CreateMap<ApplicationUser, AllEmployeesVM>();
+            CreateMap<ApplicationUser, ResetPasswordVM>();
 
             CreateMap<LeaveTypeEditVM, LeaveType>().ReverseMap();
         }
