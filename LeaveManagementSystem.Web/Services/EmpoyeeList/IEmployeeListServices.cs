@@ -7,5 +7,7 @@ namespace LeaveManagementSystem.Web.Services.EmpoyeeList
     {
         Task<List<AllEmployeesVM>> ListOfEmployees();
         Task<ResetPasswordVM> ResetPassword(string? userId);
+        Task Remove(string? userId);
+        Task<T> Get<T>(string userid) where T : class;
     }
 }

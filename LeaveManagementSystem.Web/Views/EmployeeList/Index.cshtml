@@ -28,29 +28,30 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    <a asp-area="Identity"
-                       asp-page="/Account/ForgotPassword"
-                       asp-route-userId="@item.Id">
-                        Change password
-                    </a>
-                </td>
-            </tr>
+        @foreach (var item in Model)  
+        {  
+           <tr>  
+               <td>  
+                   @Html.DisplayFor(modelItem => item.Id)  
+               </td>  
+               <td>  
+                   @Html.DisplayFor(modelItem => item.FirstName)  
+               </td>  
+               <td>  
+                   @Html.DisplayFor(modelItem => item.LastName)  
+               </td>  
+               <td>  
+                   @Html.DisplayFor(modelItem => item.Email)  
+               </td>  
+               <td>  
+                   <a asp-area="Identity"  
+                      asp-page="/Account/ForgotPassword"  
+                      asp-route-userId="@item.Id">  
+                       Change password  
+                   </a>  
+               </td>  
+               <td>  
+                   <a class="btn btn-danger" asp-action="Delete" asp-route-userid="@item.Id">Delete</a>
+               </td>  
+           </tr>  
         }
-    </tbody>
-</table>

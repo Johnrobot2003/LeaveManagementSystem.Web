@@ -6,6 +6,7 @@
 
 using LeaveManagementSystem.Web.Services.LeaveAllocations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 
 namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
 {
@@ -145,37 +146,31 @@ namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                     if (Input.RoleName == Roles.Adminitrator)
+
+                    if (Input.RoleName == Roles.Adminitrator)
                     {
-                        await _userManager.AddToRolesAsync(user, [Roles.Employee, Roles.Supervisor, Roles.Adminitrator]);
+                        await _userManager.AddToRolesAsync(user, new[] { Roles.Employee, Roles.Supervisor, Roles.Adminitrator });
                     }
-                    if (Input.RoleName == "Supervisor")
+                    else if (Input.RoleName == "Supervisor")
                     {
-                        await _userManager.AddToRolesAsync(user, [Roles.Employee, Roles.Supervisor]);
+                        await _userManager.AddToRolesAsync(user, new[] { Roles.Employee, Roles.Supervisor });
                     }
                     else
                     {
                         await _userManager.AddToRoleAsync(user, Roles.Employee);
                     }
 
-
                     var userId = await _userManager.GetUserIdAsync(user);
                     await _leaveAllocationService.AllocateLeave(userId);
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    // Automatically confirm the user's email
+                    user.EmailConfirmed = true;
+                    await _userManager.UpdateAsync(user);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        TempData["SuccessMessage"] = "Successfully Added a User.";
+                        return RedirectToPage("Register", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
@@ -190,7 +185,6 @@ namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
             }
             var roles = await _roleManager.Roles
                .Select(q => q.Name)
-                //.Where(q => q != "Administrator")
                .ToArrayAsync();
             RoleNames = roles;
             // If we got this far, something failed, redisplay form

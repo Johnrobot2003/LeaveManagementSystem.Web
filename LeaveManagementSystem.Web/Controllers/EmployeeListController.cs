@@ -1,4 +1,5 @@
 ﻿using LeaveManagementSystem.Web.Models.Employees;
+using LeaveManagementSystem.Web.Models.LeaveTypes;
 using LeaveManagementSystem.Web.Services.EmpoyeeList;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,31 @@ namespace LeaveManagementSystem.Web.Controllers
         {
             throw new NotImplementedException();
         }
+        public async Task<IActionResult> Delete(string? userid)
+        {
+            if (userid == null)
+            {
+                return NotFound();
+            }
+
+            var employees = await _employeeListService.Get<AllEmployeesVM>(userid);
+            if (employees == null)
+            {
+                return NotFound();
+            }
+
+            return View(employees);
+        }
+
+        // POST: LeaveTypes/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string? userid)
+        {
+            await _employeeListService.Remove(userid);
+            return RedirectToAction(nameof(Index));
+        }
+
 
     }
 }
