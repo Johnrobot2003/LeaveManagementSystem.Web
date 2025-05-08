@@ -80,21 +80,17 @@ namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
-            public string Password { get; set; }
+           
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [DataType(DataType.Password)]
+            /*[DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
-
+            */
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [Display(Name = "First Name")]
@@ -112,7 +108,12 @@ namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
 
             [Required]
             public string RoleName { get; set; }
-           
+            [Required]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [DataType(DataType.Password)]
+            [Display(Name = "Password")]
+            public string Password { get; set; } = Roles.Adminitrator == "Administrator" ? DefaultPassword.AdminPasswordDefault : DefaultPassword.PasswordDefault;
+
         }
 
 
@@ -140,8 +141,11 @@ namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
                 user.DateOfBirth = Input.DateOfBirth;
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
+                var defaultPass = Input.RoleName == Roles.Adminitrator
+     ?Input.Password= DefaultPassword.AdminPasswordDefault
+     :Input.Password= DefaultPassword.PasswordDefault;
 
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var result = await _userManager.CreateAsync(user, defaultPass);
 
                 if (result.Succeeded)
                 {
@@ -166,6 +170,11 @@ namespace LeaveManagementSystem.Web.Areas.Identity.Pages.Account
                     // Automatically confirm the user's email
                     user.EmailConfirmed = true;
                     await _userManager.UpdateAsync(user);
+
+                    
+
+                   
+                     
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

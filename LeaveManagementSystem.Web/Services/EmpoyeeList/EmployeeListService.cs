@@ -2,6 +2,7 @@
 using LeaveManagementSystem.Web.Models.Employees;
 using LeaveManagementSystem.Web.Models.LeaveAllocations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LeaveManagementSystem.Web.Services.EmpoyeeList
 {
@@ -54,13 +55,18 @@ namespace LeaveManagementSystem.Web.Services.EmpoyeeList
         public async Task<bool> ResetPasswordToDefault(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
+            var isAdmin = await _userManager.GetUsersInRoleAsync(Roles.Adminitrator);
             if (user == null)
             {
                 return false;
             }
-
+           
+            var defaultPass = isAdmin.IsReadOnly ? DefaultPassword.AdminPasswordDefault : DefaultPassword.PasswordDefault;
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var result = await _userManager.ResetPasswordAsync(user, token, DefaultPassword.PasswordDefault);
+            var result = await _userManager.ResetPasswordAsync(user, token, defaultPass);
+            
+
+            
 
             return result.Succeeded;
         }
